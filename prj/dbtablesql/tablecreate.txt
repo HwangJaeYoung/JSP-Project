@@ -1,0 +1,205 @@
+
+/* Create Tables */
+
+CREATE TABLE PARTY
+(
+	-- 유저의 아이디
+	ID varchar2(20) NOT NULL,
+	-- 그룹 번호
+	GNO number(10,0) NOT NULL,
+	-- 그룹에 유저의 참여여부(!초대 여부)
+	STATUS char NOT NULL,
+	PRIMARY KEY (ID, GNO)
+);
+
+
+CREATE TABLE SGROUP
+(
+	-- 그룹 번호
+	GNO number(10,0) NOT NULL,
+	-- 그룹의 이름
+	GNAME varchar2(20) NOT NULL,
+	-- 그룹의 리더 아이디
+	LEADERID varchar2(20) NOT NULL,
+	-- 그룹의 프로필 사진의 이름과 확장자
+	GROIMG varchar2(50),
+	PRIMARY KEY (GNO)
+);
+
+
+CREATE TABLE COMMENTS
+(
+	CNO number(10,0) NOT NULL,
+	-- 글(사진)의 번호
+	UNO number(10,0) NOT NULL,
+	-- 유저의 아이디
+	ID varchar2(20) NOT NULL,
+	-- 댓글 내용
+	CONTENT varchar2(100),
+	-- 댓글 등록 날짜
+	REGDATE date,
+	PRIMARY KEY (CNO)
+);
+
+
+CREATE TABLE CUSTOMER
+(
+	-- 유저의 아이디
+	ID varchar2(20) NOT NULL,
+	-- 유저의 비밀번호
+	PWD varchar2(20) NOT NULL,
+	-- 유저의 이름
+	NAME varchar2(20) NOT NULL,
+	-- 유저의 생년월일
+	BIRTHDAY date NOT NULL,
+	-- 유저의 성별
+	-- 
+	SEX varchar2(1) NOT NULL,
+	-- 유저의 전화번호
+	PHONE varchar2(15),
+	-- 유저의 집 주소
+	ADDRESS varchar2(100),
+	-- 유저의 이메일 주소
+	-- 
+	EMAIL varchar2(50),
+	-- 유저의 프로필 사진 OR 동영상 이름과 확장자
+	C_FILE varchar2(50),
+	-- 회원 ID의 사용 여부(탈퇴시 F)
+	C_STATUS varchar2(1),
+	PRIMARY KEY (ID)
+);
+
+
+CREATE TABLE POST
+(
+	-- 글(사진)의 번호
+	UNO number(10,0) NOT NULL,
+	-- 유저의 아이디
+	ID varchar2(20) NOT NULL,
+	-- 그룹 번호
+	GNO number(10,0) NOT NULL,
+	-- 글(사진)의 내용
+	CONTENT varchar2(200),
+	UPLOADDATE date NOT NULL,
+	-- 유저의 프로필 사진 OR 동영상 이름과 확장자
+	C_FILE varchar2(50),
+	-- 글(사진)의 추천 수 
+	LIKECOUNT number(10,0),
+	SECRET varchar2(1) NOT NULL,
+	-- 공지 여부
+	NOTICE varchar2(1),
+	PRIMARY KEY (UNO)
+);
+
+
+
+/* Create Foreign Keys */
+
+ALTER TABLE PARTY
+	ADD FOREIGN KEY (GNO)
+	REFERENCES SGROUP (GNO)
+;
+
+
+ALTER TABLE POST
+	ADD FOREIGN KEY (GNO)
+	REFERENCES SGROUP (GNO)
+;
+
+
+ALTER TABLE POST
+	ADD FOREIGN KEY (ID)
+	REFERENCES CUSTOMER (ID)
+;
+
+
+ALTER TABLE PARTY
+	ADD FOREIGN KEY (ID)
+	REFERENCES CUSTOMER (ID)
+;
+
+
+ALTER TABLE COMMENTS
+	ADD FOREIGN KEY (ID)
+	REFERENCES CUSTOMER (ID)
+;
+
+
+ALTER TABLE COMMENTS
+	ADD FOREIGN KEY (UNO)
+	REFERENCES POST (UNO)
+;
+
+
+
+/* Comments */
+
+COMMENT ON COLUMN PARTY.ID IS '유저의 아이디';
+COMMENT ON COLUMN PARTY.GNO IS '그룹 번호';
+COMMENT ON COLUMN PARTY.STATUS IS '그룹에 유저의 참여여부(!초대 여부)';
+COMMENT ON COLUMN SGROUP.GNO IS '그룹 번호';
+COMMENT ON COLUMN SGROUP.GNAME IS '그룹의 이름';
+COMMENT ON COLUMN SGROUP.LEADERID IS '그룹의 리더 아이디';
+COMMENT ON COLUMN SGROUP.GROIMG IS '그룹의 프로필 사진의 이름과 확장자';
+COMMENT ON COLUMN COMMENTS.UNO IS '글(사진)의 번호';
+COMMENT ON COLUMN COMMENTS.ID IS '유저의 아이디';
+COMMENT ON COLUMN COMMENTS.CONTENT IS '댓글 내용';
+COMMENT ON COLUMN COMMENTS.REGDATE IS '댓글 등록 날짜';
+COMMENT ON COLUMN CUSTOMER.ID IS '유저의 아이디';
+COMMENT ON COLUMN CUSTOMER.PWD IS '유저의 비밀번호';
+COMMENT ON COLUMN CUSTOMER.NAME IS '유저의 이름';
+COMMENT ON COLUMN CUSTOMER.BIRTHDAY IS '유저의 생년월일';
+COMMENT ON COLUMN CUSTOMER.SEX IS '유저의 성별
+';
+COMMENT ON COLUMN CUSTOMER.PHONE IS '유저의 전화번호';
+COMMENT ON COLUMN CUSTOMER.ADDRESS IS '유저의 집 주소';
+COMMENT ON COLUMN CUSTOMER.EMAIL IS '유저의 이메일 주소
+';
+COMMENT ON COLUMN CUSTOMER.C_FILE IS '유저의 프로필 사진 OR 동영상 이름과 확장자';
+COMMENT ON COLUMN CUSTOMER.C_STATUS IS '회원 ID의 사용 여부(탈퇴시 F)';
+COMMENT ON COLUMN POST.UNO IS '글(사진)의 번호';
+COMMENT ON COLUMN POST.ID IS '유저의 아이디';
+COMMENT ON COLUMN POST.GNO IS '그룹 번호';
+COMMENT ON COLUMN POST.CONTENT IS '글(사진)의 내용';
+COMMENT ON COLUMN POST.C_FILE IS '유저의 프로필 사진 OR 동영상 이름과 확장자';
+COMMENT ON COLUMN POST.LIKECOUNT IS '글(사진)의 추천 수 ';
+COMMENT ON COLUMN POST.NOTICE IS '공지 여부';
+
+
+
+
+INSERT INTO CUSTOMER VALUES('admin', 'admin', 'admin', SYSDATE, 'M', null, null, null, null,'T')
+INSERT INTO CUSTOMER VALUES('id01', 'pwd01', '황재영', TO_DATE('1990-06-25', 'YYYY-MM-DD'), 'M', '010-8516-7922', '서울특별시 광진구', '@naver.com', null,'T')
+INSERT INTO CUSTOMER VALUES('id02', 'pwd02', '임재균', TO_DATE('1990-02-11', 'YYYY-MM-DD'), 'M', '010-7268-1012', '서울특별시 광진구', '@naver.com', null,'F')
+INSERT INTO CUSTOMER VALUES('id03', 'pwd03', '장지영', TO_DATE('1991-05-02', 'YYYY-MM-DD'), 'F', '010-5493-0380', '서울특별시 중랑구 ', '@naver.com', null,'T')
+INSERT INTO CUSTOMER VALUES('id04', 'pwd04', '강영주', TO_DATE('1992-09-07', 'YYYY-MM-DD'), 'M', '010-5491-7795', '경기도 부천시 원미구', '@naver.com', null,'T')
+
+
+CREATE SEQUENCE SG_SQ INCREMENT BY 1 START WITH 1
+insert into sgroup values(SG_SQ.NEXTVAL,'secret','id01', null)
+insert into sgroup values(SG_SQ.NEXTVAL,'SG','id02', null)
+ 
+
+INSERT INTO PARTY VALUES('id01', 1, 'T')
+INSERT INTO PARTY VALUES('id02', 1, 'T')
+INSERT INTO PARTY VALUES('id03', 1, 'F')
+
+INSERT INTO PARTY VALUES('id02', 2, 'T')
+INSERT INTO PARTY VALUES('id04', 2, 'T')
+
+
+CREATE SEQUENCE POST_SQ INCREMENT BY 1 START WITH 1
+INSERT INTO POST VALUES(POST_SQ.NEXTVAL, 'id01', 1, '첫글입니다.', SYSDATE, null, 0, 'F', 'F')
+INSERT INTO POST VALUES(POST_SQ.NEXTVAL, 'id02', 1,'비밀첫글입니다.', SYSDATE, null, 0, 'T', 'F')
+INSERT INTO POST VALUES(POST_SQ.NEXTVAL, 'id02', 2,'공지첫글입니다.', SYSDATE, 'img.jpg', 0, 'F', 'T')
+
+CREATE SEQUENCE COM_SQ INCREMENT BY 1 START WITH 1
+INSERT INTO COMMENTS VALUES(COM_SQ.NEXTVAL, 1, 'id02', '첫글의 첫댓글입니다', SYSDATE)
+INSERT INTO COMMENTS VALUES(COM_SQ.NEXTVAL, 2, 'id03', '비밀첫글의 비밀첫댓글입니다', SYSDATE)
+
+
+SELECT * FROM CUSTOMER
+SELECT * FROM PARTY
+SELECT * FROM SGROUP
+SELECT * FROM POST
+SELECT * FROM UPLOAD

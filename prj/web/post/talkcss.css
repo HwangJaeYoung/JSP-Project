@@ -1,0 +1,33 @@
+@CHARSET "EUC-KR";
+<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC' rel='stylesheet' type='text/css'>
+
+
+#post_table_head 
+{ border-top: 2px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; text-align: center; background: #faf9fa; }
+
+#post_reg_table_head 
+{ border-top: 2px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; text-align: center; background: #faf9fa; 
+  width: 750px; margin: 37px;
+}
+
+#comment_table 
+{ border-top: 2px solid #7BC145; border-bottom: 1px solid #363636; text-align: center; background: #faf9fa; }
+
+#post_table_head_border
+{ width: 600px; margin: 60px;  border-color: green; border-style: solid; }
+#x{
+   text-align: right;
+
+}
+
+#post_table_content
+{ width: 500px; margin: 10px;}
+#post_table_head > table > th
+{ padding: 5px 0; text-align: center; border-bottom: 1px solid #e5e5e1; }
+
+#post_reg_table_head > table > td 
+{ padding: 5px 0; text-align: center; border-bottom: 1px solid #e5e5e5; }
+
+
+#post_th 
+{ font-family:'Alegreya Sans SC', sans-serif; color:white; text-align: center; background: #8C8C8C; }
